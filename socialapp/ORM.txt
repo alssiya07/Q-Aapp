@@ -1,0 +1,43 @@
+# angular, django, python
+
+# ORM queries
+
+# from socialapp.models import Questions,Answers
+# usr=created_by.objects.get(id=1)
+# Questions.objects.create(title="django",description="django architecture?",user="python")
+# usr.questions_set.create(title="angular",description="angular architecture")
+# usr.questions_set.create(title="javascript",description="is js synchronous")
+# qs= Question.objects.filter(created_by=usr)
+# qs=usr.questions_set.all()
+# Questions.objects.all
+
+# ques=Questions.objects.get(id=3)
+# ques
+# usr=User.objects.get(id=2)
+# ques.answers_set.create(answer="No",created_by=usr)
+# ques=Questions.objects.get(id=3)
+# usr=User.objects.get(id=3)
+# ques.answers_set.create(answer="Yes",created_by=usr)
+
+# ques.answers_set.all()
+# ques=Questions.objects.get(id=2)
+# ques
+# usr=User.objects.get(id=3)
+# usr
+# ques.answers_set.create(answer="component based architecture")
+
+# usr=created_by.objects.get(id=1)
+# usr.questions_set.create(title="fifa wc",description="which country hosting fifa wc")
+# usr=User.objects.get(id=3)
+# ques=Questions.objects.get(id=4)
+# ques
+# ques.answers_set.create(created_by=usr,answer="qatar")
+# ans=Answers.objects.get(id=1)
+# id=4
+# usr=User.objects.get(id=3)
+# usr
+# ans.upvote.add(usr)
+# usr=User.objects.get(id=3)
+# ans.upvote.add(usr)
+# ans.upvote.all()
+# ans.upvote.all().count()
