@@ -11,12 +11,14 @@ from rest_framework import authentication,permissions
 from rest_framework.decorators import action
 
 # localhost:8000/users/
+
 class UsersView(ModelViewSet):
     serializer_class=UserSerialiizer
     queryset=User.objects.all()
-#----------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------
 # localhost:8000/questions/     post
 # localhost:8000/questions/     get
+
 class QuestionView(ModelViewSet):
     authentication_classes=[authentication.BasicAuthentication]
     permission_classes=[permissions.IsAuthenticated]
@@ -25,7 +27,7 @@ class QuestionView(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
-
+# ---------------------------------------------------------------------------------
 # localhost:8000/questions/my_questions/
 
     @action(methods=['GET'],detail=False)
@@ -35,25 +37,47 @@ class QuestionView(ModelViewSet):
         return Response(data=serializer.data)
 
         # qs=Questions.objects.filter(created_by=request.user)
-#--------------------------------------------------------------------------------
-# localhost:8000/question/1/add_answers/
+# --------------------------------------------------------------------------------
+# localhost:8000/questions/1/add_answer/
+
+    @action(methods=["POST"],detail=True)
     def add_answer(self,request,*args,**kwargs):
         id=kwargs.get("pk")
         ques=Questions.objects.get(id=id)
-        ans=request.user
-        serializer=AnswerSerializer(data=request.data)
+        usr=request.user
+        serializer=AnswerSerializer(data=request.data,context={"created_by":usr,"question":ques})
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data)
         else:
             return Response(data=serializer.errors)
 
-# example
-    def create(self,request,*args,**kwargs):
-        serializer=AnswerSerializer(data=request.data)
-        if serializer.is_valid():
-            Answers.objects.create(**serializer.validated_data,context={"created_by":request.user})  # (user=request.user) for normal case
-            serializer.save()
-            return Response(data=serializer.data)
-        else:
-            return Response(data=serializer.errors)
+# ----------------------------------------------------------------------------------
+# localhost:8000/questions/1/list_answers/
+
+    @action(methods=["GET"],detail=True)
+    def list_answers(self,request,*args,**kwargs):
+        id=kwargs.get("pk")
+        ques=Questions.objects.get(id=id)
+        qs=ques.answers_set.all()
+        serializer=AnswerSerializer(qs,many=True)
+        return Response(data=serializer.data)
+
+# ----------------------------------------------------------------------------------
+# localhost:8000/answers/1/up_vote/
+
+class AnswersView(ModelViewSet):
+    authentication_classes=[authentication.BasicAuthentication]
+    permission_classes=[permissions.IsAuthenticated]
+    serializer_class=AnswerSerializer
+    queryset=Answers.object.all()
+
+    @action(methods=["get"],deatil=True)
+    def up_vote(self,request,*args,**kwargs):
+        ans=self.get_object()       # answer object
+        usr=request.user
+        ans.upvote.add(usr)
+        return Response(data="created")
+
+
+

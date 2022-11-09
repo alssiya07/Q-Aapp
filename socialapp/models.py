@@ -10,6 +10,14 @@ class Questions(models.Model):
     created_by=models.ForeignKey(User,on_delete=models.CASCADE)
     created_date=models.DateField(auto_now_add=True)
 
+    # to written/return answers along with questions
+    # by using property we can access objects as an attribute
+    # taken one question as object
+
+    @property
+    def question_answers(self):         
+        return self.answers_set.all()
+
     def __str__(self):
         return self.title
 
