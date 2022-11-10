@@ -1,5 +1,7 @@
+from django.db.models import Count
 from django.db import models
 from django.contrib.auth.models import User
+
 
 # FOR QUESTIONS
 
@@ -15,8 +17,9 @@ class Questions(models.Model):
     # taken one question as object
 
     @property
-    def question_answers(self):         
-        return self.answers_set.all()
+    def question_answers(self):
+        qs=self.answers_set.all().annotate(u_count=Count('upvote')).order_by('-u_count')   
+        return qs
 
     def __str__(self):
         return self.title
@@ -29,6 +32,10 @@ class Answers(models.Model):
     created_by=models.ForeignKey(User,on_delete=models.CASCADE)
     created_date=models.DateField(auto_now_add=True)
     upvote=models.ManyToManyField(User,related_name="up_vote")
+
+    @property
+    def votecount(self):
+        return self.upvote.all().count()
 
     def __str__(self):
         return self.answer

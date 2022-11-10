@@ -24,19 +24,22 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 # answer serializer
 class AnswerSerializer(serializers.ModelSerializer):
+    id=serializers.IntegerField(read_only=True)
     created_by=serializers.CharField(read_only=True)
     created_date=serializers.CharField(read_only=True)
     question=serializers.CharField(read_only=True)
+    votecount=serializers.IntegerField(read_only=True)
     class Meta:
         model=Answers
-        fields=["question","answer","created_by","created_date"]
-    
+        fields=["id","question","answer","created_by","created_date","votecount"]
+
 # exracting question
     def create(self,validated_data):
         ques=self.context.get("question")
         usr=self.context.get("created_by")
         return ques.answers_set.create(created_by=usr,**validated_data)
 
+# list one question and corresponding answers
 class QuestionSerializer(serializers.ModelSerializer):
     id=serializers.IntegerField(read_only=True)
     created_by=serializers.CharField(read_only=True)
@@ -48,3 +51,5 @@ class QuestionSerializer(serializers.ModelSerializer):
         "description","image",
         "created_by","created_date",
         "question_answers"]
+
+        

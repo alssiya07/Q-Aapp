@@ -67,17 +67,18 @@ class QuestionView(ModelViewSet):
 # localhost:8000/answers/1/up_vote/
 
 class AnswersView(ModelViewSet):
+    serializer_class=AnswerSerializer
+    queryset=Answers.objects.all()
     authentication_classes=[authentication.BasicAuthentication]
     permission_classes=[permissions.IsAuthenticated]
-    serializer_class=AnswerSerializer
-    queryset=Answers.object.all()
 
-    @action(methods=["get"],deatil=True)
+    @action(methods=["get"],detail=True)
     def up_vote(self,request,*args,**kwargs):
         ans=self.get_object()       # answer object
         usr=request.user
         ans.upvote.add(usr)
         return Response(data="created")
 
+        
 
 
