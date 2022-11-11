@@ -14,13 +14,13 @@ class UserSerialiizer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
 
 # question serializer
-class QuestionSerializer(serializers.ModelSerializer):
-    id=serializers.IntegerField(read_only=True)
-    created_by=serializers.CharField(read_only=True)
-    created_date=serializers.CharField(read_only=True)
-    class Meta:
-        model=Questions
-        fields=["id","title","description","image","created_by","created_date"]
+# class QuestionSerializer(serializers.ModelSerializer):
+#     id=serializers.IntegerField(read_only=True)
+#     created_by=serializers.CharField(read_only=True)
+#     created_date=serializers.CharField(read_only=True)
+#     class Meta:
+#         model=Questions
+#         fields=["id","title","description","image","created_by","created_date"]
 
 # answer serializer
 class AnswerSerializer(serializers.ModelSerializer):

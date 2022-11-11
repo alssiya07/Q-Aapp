@@ -20,7 +20,7 @@ class UsersView(ModelViewSet):
 # localhost:8000/questions/     get
 
 class QuestionView(ModelViewSet):
-    authentication_classes=[authentication.BasicAuthentication]
+    authentication_classes=[authentication.TokenAuthentication]
     permission_classes=[permissions.IsAuthenticated]
     serializer_class=QuestionSerializer
     queryset=Questions.objects.all()
@@ -69,7 +69,7 @@ class QuestionView(ModelViewSet):
 class AnswersView(ModelViewSet):
     serializer_class=AnswerSerializer
     queryset=Answers.objects.all()
-    authentication_classes=[authentication.BasicAuthentication]
+    authentication_classes=[authentication.TokenAuthentication]
     permission_classes=[permissions.IsAuthenticated]
 
     @action(methods=["get"],detail=True)
